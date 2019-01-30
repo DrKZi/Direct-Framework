@@ -31,22 +31,16 @@ namespace D3D11Framework
             while (m_frame());
     }
 
-    bool Framework::Init()
+    bool Framework::Init(const FrameworkDesc &desc)
     {
+        m_render = desc.render;
+
         m_wnd = new Window();
         m_input = new InputMgr();
 
-        if (!m_wnd || !m_input)
-        {
-            Log::Get()->Err("Не удалось выделить память");
-            return false;
-        }
-
         m_input->Init();
 
-        // Создаем значения настроек по умолчанию. В одном из будущих уроков мы вернемся к этому
-        DescWindow desc;
-        if (!m_wnd->Create(desc))
+        if (!m_wnd->Create(desc.wnd))
         {
             Log::Get()->Err("Не удалось создать окно");
             return false;
