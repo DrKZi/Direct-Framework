@@ -12,6 +12,7 @@
 #include <D3D11.h>
 #include <D3DX11.h>
 #include <D3Dcompiler.h>
+#include <xnamath.h>
 
 #pragma comment(lib, "d3d11.lib")
 #ifdef _DEBUG
