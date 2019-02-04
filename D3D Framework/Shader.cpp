@@ -13,8 +13,6 @@ Shader::Shader(Render *render)
     m_vertexShader = nullptr;
     m_pixelShader = nullptr;
     m_layout = nullptr;
-    m_sampleState = nullptr;
-    m_texture = nullptr;
     m_layoutformat = nullptr;
     m_numlayout = 0;
 }
@@ -111,36 +109,17 @@ HRESULT Shader::m_compileshaderfromfile(const wchar_t *FileName, LPCSTR EntryPoi
     return hr;
 }
 
-bool Shader::LoadTexture(const wchar_t *name)
+bool Shader::AddTexture(const wchar_t *name)
 {
-    HRESULT hr = D3DX11CreateShaderResourceViewFromFile(m_render->m_pd3dDevice, name, NULL, NULL, &m_texture, NULL);
+    ID3D11ShaderResourceView *texture = nullptr;
+    HRESULT hr = D3DX11CreateShaderResourceViewFromFile(m_render->m_pd3dDevice, name, NULL, NULL, &texture, NULL);
     if (FAILED(hr))
     {
         Log::Get()->Err("Не удалось загрузить текстуру %ls", name);
         return false;
     }
 
-    D3D11_SAMPLER_DESC samplerDesc;
-    samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-    samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-    samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-    samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-    samplerDesc.MipLODBias = 0.0f;
-    samplerDesc.MaxAnisotropy = 1;
-    samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-    samplerDesc.BorderColor[0] = 0;
-    samplerDesc.BorderColor[1] = 0;
-    samplerDesc.BorderColor[2] = 0;
-    samplerDesc.BorderColor[3] = 0;
-    samplerDesc.MinLOD = 0;
-    samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
-
-    hr = m_render->m_pd3dDevice->CreateSamplerState(&samplerDesc, &m_sampleState);
-    if (FAILED(hr))
-    {
-        Log::Get()->Err("Не удалось создать sample state");
-        return false;
-    }
+    m_textures.push_back(texture);
 
     return true;
 }
@@ -150,11 +129,8 @@ void Shader::Draw()
     m_render->m_pImmediateContext->IASetInputLayout(m_layout);
     m_render->m_pImmediateContext->VSSetShader(m_vertexShader, NULL, 0);
     m_render->m_pImmediateContext->PSSetShader(m_pixelShader, NULL, 0);
-    if (m_texture)
-        m_render->m_pImmediateContext->PSSetShaderResources(0, 1, &m_texture);
-
-    if (m_sampleState)
-        m_render->m_pImmediateContext->PSSetSamplers(0, 1, &m_sampleState);
+    if (!m_textures.empty())
+        m_render->m_pImmediateContext->PSSetShaderResources(0, m_textures.size(), &m_textures[0]);
 }
 
 void Shader::Close()
@@ -162,6 +138,7 @@ void Shader::Close()
     _RELEASE(m_vertexShader);
     _RELEASE(m_pixelShader);
     _RELEASE(m_layout);
-    _RELEASE(m_sampleState);
-    _RELEASE(m_texture);
+    for (int i = 0; i < m_textures.size(); i++)
+        _RELEASE(m_textures[i]);
+    m_textures.clear();
 }

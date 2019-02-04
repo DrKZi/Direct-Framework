@@ -51,6 +51,21 @@
     <ClInclude Include="Text.h">
       <Filter>Render System</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Render System</Filter>
+    </ClInclude>
+    <ClInclude Include="Frustum.h">
+      <Filter>Render System</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderState.h">
+      <Filter>Render System</Filter>
+    </ClInclude>
+    <ClInclude Include="FPS.h">
+      <Filter>Util System</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Util System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -86,6 +101,21 @@
     </ClCompile>
     <ClCompile Include="Text.cpp">
       <Filter>Render System</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Render System</Filter>
+    </ClCompile>
+    <ClCompile Include="Frustum.cpp">
+      <Filter>Render System</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderState.cpp">
+      <Filter>Render System</Filter>
+    </ClCompile>
+    <ClCompile Include="FPS.cpp">
+      <Filter>Util System</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Util System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

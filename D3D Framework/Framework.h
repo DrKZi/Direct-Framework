@@ -28,7 +28,7 @@ namespace D3D11Framework
         void AddInputListener(InputListener *listener);
     protected:
         bool m_frame();
-
+        
         Window *m_wnd;
         Render *m_render;
         InputMgr *m_input;

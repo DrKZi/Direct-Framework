@@ -28,7 +28,7 @@ bool BitmapFont::Init(char *fontFilename)
     if (!m_shader)
         return false;
 
-    if (!m_shader->LoadTexture(m_file.c_str()))
+    if (!m_shader->AddTexture(m_file.c_str()))
         return false;
     m_shader->AddInputElementDesc("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
     m_shader->AddInputElementDesc("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);

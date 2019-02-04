@@ -153,8 +153,11 @@
   <ItemGroup>
     <ClInclude Include="BitmapFont.h" />
     <ClInclude Include="Buffer.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="D3D11_Framework.h" />
+    <ClInclude Include="FPS.h" />
     <ClInclude Include="Framework.h" />
+    <ClInclude Include="Frustum.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="InputCodes.h" />
     <ClInclude Include="InputListener.h" />
@@ -163,21 +166,27 @@
     <ClInclude Include="macros.h" />
     <ClInclude Include="ms3dspec.h" />
     <ClInclude Include="Render.h" />
+    <ClInclude Include="RenderState.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="StaticMesh.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Text.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BitmapFont.cpp" />
     <ClCompile Include="Buffer.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="FPS.cpp" />
     <ClCompile Include="Framework.cpp" />
+    <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="InputMgr.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Render.cpp" />
+    <ClCompile Include="RenderState.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="StaticMesh.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -187,6 +196,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Text.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

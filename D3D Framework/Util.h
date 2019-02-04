@@ -8,3 +8,10 @@ inline wchar_t* CharToWChar(char *mbString)
     mbstowcs(ucString, mbString, len);
     return ucString;
 }
+
+inline std::wstring intToStr(int i)
+{
+    wchar_t str[255];
+    swprintf(str, 255, L"%d", i);
+    return str;
+}

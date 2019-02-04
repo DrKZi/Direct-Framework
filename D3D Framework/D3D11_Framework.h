@@ -11,3 +11,7 @@
 #include "Image.h"
 #include "BitmapFont.h"
 #include "Text.h"
+#include "Camera.h"
+#include "Frustum.h"
+#include "Fps.h"
+#include "Timer.h"

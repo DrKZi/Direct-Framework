@@ -40,7 +40,7 @@ bool Image::Init(const wchar_t *textureFilename, float bitmapWidth, float bitmap
     m_shader = new Shader(m_render);
     if (!m_shader)
         return false;
-    if (!m_shader->LoadTexture(textureFilename))
+    if (!m_shader->AddTexture(textureFilename))
         return false;
     m_shader->AddInputElementDesc("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
     m_shader->AddInputElementDesc("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
@@ -107,7 +107,7 @@ void Image::m_RenderBuffers()
     unsigned int offset = 0;
     m_render->m_pImmediateContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
     m_render->m_pImmediateContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
-    m_render->m_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    //m_render->m_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
 void Image::m_SetShaderParameters(float x, float y)

@@ -17,14 +17,8 @@ namespace D3D11Framework
         m_pImmediateContext = nullptr;
         m_pSwapChain = nullptr;
         m_pRenderTargetView = nullptr;
-
-        m_pDepthStencil = nullptr;
         m_pDepthStencilView = nullptr;
-        m_pDepthStencilState = nullptr;
-        m_pDepthDisabledStencilState = nullptr;
-
-        m_pAlphaEnableBlendingState = nullptr;
-        m_pAlphaDisableBlendingState = nullptr;
+        m_renderstate = nullptr;
     }
 
     Render::~Render()
@@ -57,9 +51,11 @@ namespace D3D11Framework
             return false;
         }
 
-        if (!m_createblendingstate())
+        m_renderstate = new RenderState(m_pd3dDevice, m_pImmediateContext);
+
+        if (!m_renderstate->Init())
         {
-            Log::Get()->Err("Не удалось создать blending state");
+            Log::Get()->Err("Не удалось создать render state");
             return false;
         }
 
@@ -126,6 +122,7 @@ namespace D3D11Framework
 
     bool Render::m_createdepthstencil()
     {
+        ID3D11Texture2D *m_pDepthStencil = nullptr;
         D3D11_TEXTURE2D_DESC descDepth;
         ZeroMemory(&descDepth, sizeof(descDepth));
         descDepth.Width = m_width;
@@ -143,31 +140,6 @@ namespace D3D11Framework
         if (FAILED(hr))
             return false;
 
-        D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
-        ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
-        depthStencilDesc.DepthEnable = true;
-        depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-        depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
-        depthStencilDesc.StencilEnable = true;
-        depthStencilDesc.StencilReadMask = 0xFF;
-        depthStencilDesc.StencilWriteMask = 0xFF;
-        depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-        depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-        depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-        depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-        depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-        depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-        depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-        depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-        hr = m_pd3dDevice->CreateDepthStencilState(&depthStencilDesc, &m_pDepthStencilState);
-        if (FAILED(hr))
-            return false;
-
-        depthStencilDesc.DepthEnable = false;
-        hr = m_pd3dDevice->CreateDepthStencilState(&depthStencilDesc, &m_pDepthDisabledStencilState);
-        if (FAILED(hr))
-            return false;
-
         D3D11_DEPTH_STENCIL_VIEW_DESC descDSV;
         ZeroMemory(&descDSV, sizeof(descDSV));
         descDSV.Format = descDepth.Format;
@@ -177,29 +149,7 @@ namespace D3D11Framework
         if (FAILED(hr))
             return false;
 
-        return true;
-    }
-
-    bool Render::m_createblendingstate()
-    {
-        D3D11_BLEND_DESC blendStateDescription;
-        ZeroMemory(&blendStateDescription, sizeof(D3D11_BLEND_DESC));
-        blendStateDescription.RenderTarget[0].BlendEnable = TRUE;
-        blendStateDescription.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
-        blendStateDescription.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-        blendStateDescription.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-        blendStateDescription.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-        blendStateDescription.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-        blendStateDescription.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-        blendStateDescription.RenderTarget[0].RenderTargetWriteMask = 0x0f;
-        HRESULT hr = m_pd3dDevice->CreateBlendState(&blendStateDescription, &m_pAlphaEnableBlendingState);
-        if (FAILED(hr))
-            return false;
-
-        blendStateDescription.RenderTarget[0].BlendEnable = FALSE;
-        hr = m_pd3dDevice->CreateBlendState(&blendStateDescription, &m_pAlphaDisableBlendingState);
-        if (FAILED(hr))
-            return false;
+        _RELEASE(m_pDepthStencil);
 
         return true;
     }
@@ -230,10 +180,8 @@ namespace D3D11Framework
         if (m_pImmediateContext)
             m_pImmediateContext->ClearState();
 
-        _RELEASE(m_pDepthStencil);
+        _CLOSE(m_renderstate);
         _RELEASE(m_pDepthStencilView);
-        _RELEASE(m_pDepthStencilState);
-        _RELEASE(m_pDepthDisabledStencilState);
         _RELEASE(m_pRenderTargetView);
         _RELEASE(m_pSwapChain);
         _RELEASE(m_pImmediateContext);
@@ -242,32 +190,22 @@ namespace D3D11Framework
 
     void Render::TurnZBufferOn()
     {
-        m_pImmediateContext->OMSetDepthStencilState(m_pDepthStencilState, 1);
+        m_renderstate->TurnZBufferOn();
     }
 
     void Render::TurnZBufferOff()
     {
-        m_pImmediateContext->OMSetDepthStencilState(m_pDepthDisabledStencilState, 1);
+        m_renderstate->TurnZBufferOff();
     }
 
     void Render::TurnOnAlphaBlending()
     {
-        float blendFactor[4];
-        blendFactor[0] = 0.0f;
-        blendFactor[1] = 0.0f;
-        blendFactor[2] = 0.0f;
-        blendFactor[3] = 0.0f;
-        m_pImmediateContext->OMSetBlendState(m_pAlphaEnableBlendingState, blendFactor, 0xffffffff);
+        m_renderstate->TurnOnAlphaBlending();
     }
 
     void Render::TurnOffAlphaBlending()
     {
-        float blendFactor[4];
-        blendFactor[0] = 0.0f;
-        blendFactor[1] = 0.0f;
-        blendFactor[2] = 0.0f;
-        blendFactor[3] = 0.0f;
-        m_pImmediateContext->OMSetBlendState(m_pAlphaDisableBlendingState, blendFactor, 0xffffffff);
+        m_renderstate->TurnOffAlphaBlending();
     }
 
     //------------------------------------------------------------------

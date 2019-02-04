@@ -140,7 +140,7 @@ bool StaticMesh::m_loadMS3DFile(wchar_t *Filename)
     }
 
     wchar_t *name = CharToWChar(pMS3DMaterials[0].texture);
-    if (!m_shader->LoadTexture(name))
+    if (!m_shader->AddTexture(name))
         return false;
     _DELETE_ARRAY(name);
 
@@ -185,7 +185,7 @@ void StaticMesh::m_RenderBuffers()
     unsigned int offset = 0;
     m_render->m_pImmediateContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
     m_render->m_pImmediateContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R16_UINT, 0);
-    m_render->m_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    //m_render->m_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
 void StaticMesh::m_SetShaderParameters(CXMMATRIX viewmatrix)
