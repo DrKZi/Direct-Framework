@@ -19,7 +19,7 @@ BitmapFont::BitmapFont(Render *render)
     m_HeightTex = 0;
 }
 
-bool BitmapFont::Init(char *fontFilename)
+bool BitmapFont::Init(const char *fontFilename)
 {
     if (!m_parse(fontFilename))
         return false;
@@ -47,7 +47,7 @@ bool BitmapFont::Init(char *fontFilename)
     return true;
 }
 
-bool BitmapFont::m_parse(char *fontFilename)
+bool BitmapFont::m_parse(const char *fontFilename)
 {
     ifstream fin;
     fin.open(fontFilename);

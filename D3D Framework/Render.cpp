@@ -157,7 +157,7 @@ namespace D3D11Framework
     void Render::m_initmatrix()
     {
         float aspect = (float)m_width / (float)m_height;
-        m_Projection = XMMatrixPerspectiveFovLH(0.4f*3.14f, aspect, 1.0f, 1000.0f);
+        m_Projection = XMMatrixPerspectiveFovLH(XM_PIDIV2, aspect, 0.01f, 100.0f);
         m_Ortho = XMMatrixOrthographicLH((float)m_width, (float)m_height, 0.0f, 1.0f);
     }
 

@@ -15,6 +15,7 @@ namespace D3D11Framework
 
         bool CreateShader(const wchar_t *namevs, const wchar_t *nameps);
         bool AddTexture(const wchar_t *name);
+        bool AddTexture(ID3D11ShaderResourceView* texture);
 
         void Draw();
         void Close();
