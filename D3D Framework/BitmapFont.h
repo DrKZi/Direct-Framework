@@ -41,7 +41,7 @@ namespace D3D11Framework
 
         bool Init(const char *fontFilename);
         void Draw(unsigned int index, float r, float g, float b, float x, float y);
-        void BuildVertexArray(VertexFont *vert, int numvert, const wchar_t *sentence);
+        float BuildVertexArray(VertexFont *vert, int numvert, const wchar_t *sentence);
         void Close();
 
     private:

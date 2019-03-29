@@ -18,6 +18,8 @@ namespace D3D11Framework
         void Draw(float r, float g, float b, float x, float y);
         void Close();
 
+        float GetLength();
+
         bool SetText(const std::wstring &text);
 
     private:
@@ -33,6 +35,8 @@ namespace D3D11Framework
         int m_numindex;
         int m_numdrawindex;
         int m_numvertex;
+
+        float m_length;
 
         bool m_static;
         int m_size;

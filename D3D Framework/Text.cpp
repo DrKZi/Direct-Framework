@@ -16,6 +16,7 @@ Text::Text(Render *render, BitmapFont *font)
     m_numvertex = 0;
     m_static = true;
     m_size = 0;
+    m_length = 0;
 }
 
 bool Text::Init(const std::wstring &text, bool statictext, int charsize)
@@ -47,7 +48,7 @@ bool Text::m_InitBuffers(const std::wstring &text)
     if (!indices)
         return false;
 
-    m_font->BuildVertexArray(vertex, m_numvertex, text.c_str());
+    m_length = m_font->BuildVertexArray(vertex, m_numvertex, text.c_str());
 
     for (int i = 0; i < m_numindex / 6; i++)
     {
@@ -82,7 +83,7 @@ bool Text::m_updatebuffer(const std::wstring &text)
 
     VertexFont *verticesPtr = (VertexFont*)mappedResource.pData;
 
-    m_font->BuildVertexArray(verticesPtr, m_numvertex, text.c_str());
+    m_length = m_font->BuildVertexArray(verticesPtr, m_numvertex, text.c_str());
 
     m_render->m_pImmediateContext->Unmap(m_vertexBuffer, 0);
 
@@ -108,6 +109,11 @@ void Text::Close()
 {
     _RELEASE(m_vertexBuffer);
     _RELEASE(m_indexBuffer);
+}
+
+float Text::GetLength()
+{
+    return m_length;
 }
 
 bool Text::SetText(const std::wstring &text)

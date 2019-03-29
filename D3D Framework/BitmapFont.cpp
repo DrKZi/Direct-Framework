@@ -142,8 +142,9 @@ bool BitmapFont::m_parse(const char *fontFilename)
     return true;
 }
 
-void BitmapFont::BuildVertexArray(VertexFont *vertex, int numvert, const wchar_t *sentence)
+float BitmapFont::BuildVertexArray(VertexFont *vertex, int numvert, const wchar_t *sentence)
 {
+    float leng = 0;
     int numLetters = (int)wcslen(sentence);
     // следим чтобы число букв не было больше числа вершин
     if (numLetters * 4 > numvert)
@@ -166,6 +167,7 @@ void BitmapFont::BuildVertexArray(VertexFont *vertex, int numvert, const wchar_t
         float right = left + Width;
         float top = drawY - OffsetY;
         float bottom = top - Height;
+        leng += Width + OffsetX;
         float lefttex = CharX / m_WidthTex;
         float righttex = (CharX + Width) / m_WidthTex;
         float toptex = CharY / m_HeightTex;
@@ -186,6 +188,7 @@ void BitmapFont::BuildVertexArray(VertexFont *vertex, int numvert, const wchar_t
 
         drawX += m_Chars[sentence[i]].xAdv;
     }
+    return leng;
 }
 
 void BitmapFont::Draw(unsigned int index, float r, float g, float b, float x, float y)

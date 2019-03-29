@@ -131,6 +131,11 @@ bool Shader::AddTexture(ID3D11ShaderResourceView * texture)
     return true;
 }
 
+void D3D11Framework::Shader::RemoveTexture()
+{
+    m_textures.pop_back();
+}
+
 void Shader::Draw()
 {
     m_render->m_pImmediateContext->IASetInputLayout(m_layout);
