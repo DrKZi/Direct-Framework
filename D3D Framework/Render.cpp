@@ -103,6 +103,7 @@ namespace D3D11Framework
         sd.SampleDesc.Count = 1;
         sd.SampleDesc.Quality = 0;
         sd.Windowed = TRUE;
+        sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
         HRESULT hr = D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, createDeviceFlags, featureLevels, numFeatureLevels, D3D11_SDK_VERSION, &sd, &m_pSwapChain, &m_pd3dDevice, NULL, &m_pImmediateContext);
         if (FAILED(hr))
@@ -116,6 +117,8 @@ namespace D3D11Framework
         _RELEASE(pBackBuffer);
         if (FAILED(hr))
             return false;
+
+        m_pSwapChain->SetFullscreenState(true, nullptr);
 
         return true;
     }
@@ -183,6 +186,9 @@ namespace D3D11Framework
         _CLOSE(m_renderstate);
         _RELEASE(m_pDepthStencilView);
         _RELEASE(m_pRenderTargetView);
+
+        m_pSwapChain->SetFullscreenState(false, nullptr);
+
         _RELEASE(m_pSwapChain);
         _RELEASE(m_pImmediateContext);
         _RELEASE(m_pd3dDevice);

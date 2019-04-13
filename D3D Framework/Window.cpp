@@ -41,6 +41,7 @@ namespace D3D11Framework
         wnd.hIconSm = wnd.hIcon;
         wnd.hCursor = LoadCursor(0, IDC_ARROW);
         wnd.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
+        //wnd.hbrBackground = (HBRUSH)COLOR_WINDOW;
         wnd.lpszMenuName = NULL;
         wnd.lpszClassName = L"D3D11F";
         wnd.cbSize = sizeof(WNDCLASSEX);
