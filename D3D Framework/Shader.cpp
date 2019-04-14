@@ -15,6 +15,7 @@ Shader::Shader(Render *render)
     m_layout = nullptr;
     m_layoutformat = nullptr;
     m_numlayout = 0;
+	pLoadInfo = new D3DX11_IMAGE_INFO;
 }
 
 void Shader::AddInputElementDesc(const char *SemanticName, DXGI_FORMAT format)
@@ -111,7 +112,13 @@ HRESULT Shader::m_compileshaderfromfile(const wchar_t *FileName, LPCSTR EntryPoi
 
 bool Shader::AddTexture(const wchar_t *name)
 {
+	
     ID3D11ShaderResourceView *texture = nullptr;
+	HRESULT hri = D3DX11GetImageInfoFromFile(name, NULL, pLoadInfo, NULL);
+	if (FAILED(hri))
+	{
+		Log::Get()->Err("Не удалось загрузить информацию о текстуре %ls", name);
+	}
     HRESULT hr = D3DX11CreateShaderResourceViewFromFile(m_render->m_pd3dDevice, name, NULL, NULL, &texture, NULL);
     if (FAILED(hr))
     {
@@ -129,6 +136,11 @@ bool Shader::AddTexture(ID3D11ShaderResourceView * texture)
     m_textures.push_back(texture);
 
     return true;
+}
+
+D3DX11_IMAGE_INFO * D3D11Framework::Shader::GetImageInfo()
+{
+	return pLoadInfo;
 }
 
 void D3D11Framework::Shader::RemoveTexture()

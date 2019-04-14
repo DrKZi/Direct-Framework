@@ -11,9 +11,12 @@ namespace D3D11Framework
     public:
         Image(Render *render);
 
-        bool Init(const wchar_t *name, float bitmapWidth, float bitmapHeight);
+        bool Init(const wchar_t *name, float bitmapHeight);
         void Draw(float positionX, float positionY);
         void Close();
+
+		float GetBitmapWidth();
+		float GetBitmapHeight();
 
     private:
         bool m_InitBuffers();

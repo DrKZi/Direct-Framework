@@ -17,6 +17,8 @@ namespace D3D11Framework
         bool AddTexture(const wchar_t *name);
         bool AddTexture(ID3D11ShaderResourceView* texture);
 
+		D3DX11_IMAGE_INFO* GetImageInfo();
+
         void RemoveTexture();
 
         void Draw();
@@ -34,6 +36,8 @@ namespace D3D11Framework
 
         D3D11_INPUT_ELEMENT_DESC *m_layoutformat;
         unsigned int m_numlayout;
+
+		D3DX11_IMAGE_INFO *pLoadInfo;
     };
 
     //------------------------------------------------------------------

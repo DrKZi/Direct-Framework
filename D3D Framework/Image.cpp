@@ -27,24 +27,28 @@ Image::Image(Render *render)
     m_shader = nullptr;
 }
 
-bool Image::Init(const wchar_t *textureFilename, float bitmapWidth, float bitmapHeight)
+bool Image::Init(const wchar_t *textureFilename, float bitmapHeight)
 {
-    m_bitmapWidth = bitmapWidth;
+	m_shader = new Shader(m_render);
+	if (!m_shader)
+		return false;
+	if (!m_shader->AddTexture(textureFilename))
+		return false;
+	m_shader->AddInputElementDesc("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
+	m_shader->AddInputElementDesc("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
+	if (!m_shader->CreateShader(L"image.vs", L"image.ps"))
+		return false;
+
+	float photoWidth = m_shader->GetImageInfo()->Width;
+	float photoHeight = m_shader->GetImageInfo()->Height;
+	float koefRes = photoWidth / photoHeight;
+
+	m_bitmapWidth = bitmapHeight * koefRes;
     m_bitmapHeight = bitmapHeight;
     m_previousPosX = -1;
     m_previousPosY = -1;
 
     if (!m_InitBuffers())
-        return false;
-
-    m_shader = new Shader(m_render);
-    if (!m_shader)
-        return false;
-    if (!m_shader->AddTexture(textureFilename))
-        return false;
-    m_shader->AddInputElementDesc("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
-    m_shader->AddInputElementDesc("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
-    if (!m_shader->CreateShader(L"image.vs", L"image.ps"))
         return false;
 
     return true;
@@ -133,4 +137,14 @@ void Image::Close()
     _RELEASE(m_indexBuffer);
     _RELEASE(m_constantBuffer);
     _CLOSE(m_shader);
+}
+
+float D3D11Framework::Image::GetBitmapWidth()
+{
+	return m_bitmapWidth;
+}
+
+float D3D11Framework::Image::GetBitmapHeight()
+{
+	return m_bitmapHeight;
 }
