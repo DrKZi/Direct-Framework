@@ -66,6 +66,11 @@
     <ClInclude Include="Timer.h">
       <Filter>Util System</Filter>
     </ClInclude>
+    <ClInclude Include="RenderTarget.h" />
+    <ClInclude Include="InfoLable.h" />
+    <ClInclude Include="Primitives.h" />
+    <ClInclude Include="RenderTree.h" />
+    <ClInclude Include="Input.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -117,6 +122,11 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Util System</Filter>
     </ClCompile>
+    <ClCompile Include="RenderTarget.cpp" />
+    <ClCompile Include="InfoLable.cpp" />
+    <ClCompile Include="Primitives.cpp" />
+    <ClCompile Include="RenderTree.cpp" />
+    <ClCompile Include="Input.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common System">

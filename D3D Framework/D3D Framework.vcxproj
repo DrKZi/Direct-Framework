@@ -81,11 +81,15 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>D:\Projects\SDK\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Projects\SDK\Lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)lib\</OutDir>
     <IntDir>$(SolutionDir)obj\$(Configuration)\</IntDir>
+    <IncludePath>D:\Projects\SDK\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Projects\SDK\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -159,14 +163,19 @@
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="Image.h" />
+    <ClInclude Include="InfoLable.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="InputCodes.h" />
     <ClInclude Include="InputListener.h" />
     <ClInclude Include="InputMgr.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="macros.h" />
     <ClInclude Include="ms3dspec.h" />
+    <ClInclude Include="Primitives.h" />
     <ClInclude Include="Render.h" />
     <ClInclude Include="RenderState.h" />
+    <ClInclude Include="RenderTarget.h" />
+    <ClInclude Include="RenderTree.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="StaticMesh.h" />
     <ClInclude Include="stdafx.h" />
@@ -183,10 +192,15 @@
     <ClCompile Include="Framework.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="Image.cpp" />
+    <ClCompile Include="InfoLable.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="InputMgr.cpp" />
     <ClCompile Include="Log.cpp" />
+    <ClCompile Include="Primitives.cpp" />
     <ClCompile Include="Render.cpp" />
     <ClCompile Include="RenderState.cpp" />
+    <ClCompile Include="RenderTarget.cpp" />
+    <ClCompile Include="RenderTree.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="StaticMesh.cpp" />
     <ClCompile Include="stdafx.cpp">

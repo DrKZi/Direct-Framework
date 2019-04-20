@@ -3,31 +3,46 @@
 
 using namespace D3D11Framework;
 
-bool Timer::Init()
+Timer::Timer()
 {
-    QueryPerformanceFrequency((LARGE_INTEGER*)&m_frequency);
-    if (m_frequency == 0)
-        return false;
-
-    m_ticksPerMs = (float)(m_frequency / 1000);
-
-    QueryPerformanceCounter((LARGE_INTEGER*)&m_startTime);
-
-    return true;
+	m_TimerStart = GetTickCount() / 1000.0f;
+	m_TimerGoal = m_TimerStart;
+	m_curSet = 0;
 }
 
-void Timer::Frame()
+void Timer::SetTimer(float time)
 {
-    INT64 currentTime;
-    QueryPerformanceCounter((LARGE_INTEGER*)&currentTime);
+	m_curSet = time;
 
-    float timeDifference = (float)(currentTime - m_startTime);
-
-    m_frameTime = timeDifference / m_ticksPerMs;
-    m_startTime = currentTime;
+	m_TimerStart = GetTickCount() / 1000.0f;
+	m_TimerGoal = m_TimerStart + m_curSet;
 }
 
-float Timer::GetTime()
+void Timer::Restart()
 {
-    return m_frameTime;
+	m_TimerStart = GetTickCount() / 1000.0f;
+	m_TimerGoal = m_TimerStart + m_curSet;
+}
+
+float Timer::GetCurOption()
+{
+	return m_curSet;
+}
+
+bool Timer::Resault()
+{
+	DWORD curTime = GetTickCount() / 1000.f;
+	if (curTime == m_TimerGoal)
+	{
+		m_curSet = 0;
+		return true;
+	}
+	else
+		return false;
+}
+
+void Timer::Stop()
+{
+	m_curSet = 0;
+	m_TimerGoal = m_TimerStart;
 }

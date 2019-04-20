@@ -6,17 +6,23 @@ namespace D3D11Framework
 
     class Timer
     {
-    public:
-        bool Init();
-        void Frame();
+	public:
+		Timer();
 
-        float GetTime();
+		void SetTimer(float time);
+		void Restart();
 
-    private:
-        INT64 m_frequency;
-        INT64 m_startTime;
-        float m_ticksPerMs;
-        float m_frameTime;
+		float GetCurOption();
+
+		bool Resault();
+
+		void Stop();
+
+	private:
+		DWORD m_TimerStart;
+		DWORD m_TimerGoal;
+
+		float m_curSet;
     };
 
     //------------------------------------------------------------------
